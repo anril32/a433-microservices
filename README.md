@@ -13,5 +13,6 @@ Web sederhana yang memungkinkan pengguna untuk memasukkan item (teks), menyimpan
 Aplikasi ini terdiri dari 2 bagian:
 1. item-app: Bertugas untuk menerima dan mengolah request terkait static asset seperti berkas HTML, CSS, dan JavaScript. Bagian ini menggunakan Node.js dan Express.
 2. item-db: Bertugas untuk menerima dan mengolah pembacaan dan penulisan data dari/ke database. Bagian ini menggunakan MongoDB.
+
 Artinya perlu membuat 2 buah container untuk deploy aplikasi ini
 
