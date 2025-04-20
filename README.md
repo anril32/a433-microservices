@@ -10,6 +10,7 @@ Terdapat Beberapa Branch sebagai berikut
 # 2. proyek-pertama
 Proyek Deploy Aplikasi Item App dengan Docker Compose.
 Web sederhana yang memungkinkan pengguna untuk memasukkan item (teks), menyimpannya ke database, dan menampilkannya saat itu juga.
+
 ---
 Aplikasi ini terdiri dari 2 bagian:
 1. item-app: Bertugas untuk menerima dan mengolah request terkait static asset seperti berkas HTML, CSS, dan JavaScript. Bagian ini menggunakan Node.js dan Express.
