@@ -9,6 +9,8 @@ Repository Terdapat Beberapa Branch sebagai berikut:
 Proyek Deploy Aplikasi Item App dengan Docker Compose.
 Aplikasi web sederhana yang memungkinkan pengguna untuk memasukkan item (teks), menyimpannya ke database, dan menampilkannya saat itu juga.
 
+Slahkan membuka branches proyek-pertama untuk melihatnya atau [link](https://github.com/anril32/a433-microservices/tree/proyek-pertama)
+
 ---
 Aplikasi ini terdiri dari 2 bagian:
 1. item-app: Bertugas untuk menerima dan mengolah request terkait static asset seperti berkas HTML, CSS, dan JavaScript. Bagian ini menggunakan Node.js dan Express.
