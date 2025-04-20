@@ -1,9 +1,7 @@
 # a433-microservices
-Repository ini digunakan untuk kebutuhan Belajar Membangun Arsitektur Microservices
+Repository Terdapat Beberapa Branch sebagai berikut:
 
 ---
-
-Terdapat Beberapa Branch sebagai berikut
 
 # 1. todo-app
 
