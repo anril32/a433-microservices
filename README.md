@@ -14,5 +14,17 @@ Silakan clone dengan perintah berikut.<br>
    export CR_PAT=YOUR_TOKEN_GITHUB
    ```
 
+3. Berkas docker-compose.yml yang berisi beberapa konfigurasi untuk dua buah service: item-app dan item-db.
 
+---
+Jalankan perintah berikut untuk memulai aplikasi item-app menggunakan Docker Compose
 
+```
+docker compose up -d
+```
+
+Jalankan perintah berikut untuk menghapus semua resource yang telah dibuat
+
+```
+docker compose down --volumes
+```
