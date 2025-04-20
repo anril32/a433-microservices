@@ -7,7 +7,7 @@ Repository Terdapat Beberapa Branch sebagai berikut:
 
 # 2. proyek-pertama
 Proyek Deploy Aplikasi Item App dengan Docker Compose.
-Web sederhana yang memungkinkan pengguna untuk memasukkan item (teks), menyimpannya ke database, dan menampilkannya saat itu juga.
+Aplikasi Web sederhana yang memungkinkan pengguna untuk memasukkan item (teks), menyimpannya ke database, dan menampilkannya saat itu juga.
 
 ---
 Aplikasi ini terdiri dari 2 bagian:
