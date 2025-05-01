@@ -16,8 +16,11 @@ jobs:
       - run:
           name: Install hadolint
           command: |
-            curl -L -o /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
-            chmod +x /usr/local/bin/hadolint
+            mkdir -p ~/bin
+            curl -L -o ~/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+            chmod +x ~/bin/hadolint
+            echo 'export PATH=$PATH:~/bin' >> $BASH_ENV
+            source $BASH_ENV
       - run:
           name: Run hadolint on Dockerfile
           command: hadolint Dockerfile
@@ -38,9 +41,9 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-            docker build -t your-dockerhub-username/karsajobs:latest .
-            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push your-dockerhub-username/karsajobs:latest
+            docker build -t ghcr.io/anril32/karsajobs:latest .
+            echo $CR_PAT | docker login ghcr.io -u anril32 --password-stdin
+            docker push ghcr.io/anril32/karsajobs:latest
 
 workflows:
   version: 2
