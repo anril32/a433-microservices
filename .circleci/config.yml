@@ -1,17 +1,28 @@
 version: 2.1
 
+# mengambil atau pull image yang akan digunakan
 executors:
   docker-executor:
     docker:
       - image: cimg/base:stable
 
+# perintah yang akan dilakukan selama Continuous Integration
 jobs:
+  # perintah melakukan proses pada lint-dockerfile
   lint-dockerfile:
+    # memanggil image sebelumnya
     executor: docker-executor
     steps:
+      # menuju branch lokasi file saat ini
       - checkout
+      # Menjalankan perintah sesuai dengan name
       - run:
           name: Install hadolint
+          # Membuat direktori lokal untuk menyimpan binary.
+          # Download hadolint ke direktori user (yang punya akses tulis).
+          # Membuat binary bisa di jalankan
+          # Menambahkan ~/bin ke PATH di sesi CircleCI.
+          # Memuat ulang konfigurasi shell agar perubahan PATH langsung berlaku.
           command: |
             mkdir -p ~/bin
             curl -L -o ~/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
@@ -20,20 +31,27 @@ jobs:
             source $BASH_ENV
       - run:
           name: Run hadolint on Dockerfile
+          # menjalankan hadolint terhadap berkas Dockerfile
           command: hadolint Dockerfile
-
+  # perintah melakukan proses pada build-app-karsajobs-ui
   build-app-karsajobs-ui:
+    # memanggil image sebelumnya
     executor: docker-executor
     steps:
+      # menuju branch lokasi file saat ini
       - checkout
+      # mengaktifkan Docker daemon agar perintah Docker bisa jalan di dalam job CircleCI
       - setup_remote_docker
       - run:
           name: Build and Push UI Docker Image
+          # membuat Docker image dari Dockerfile
+          # Login ke GitHub Packages
+          # Mengunggah GitHub Packages
           command: |
             docker build -t ghcr.io/anril32/karsajobs-ui:latest .
             echo $CR_PAT | docker login ghcr.io -u anril32 --password-stdin
             docker push ghcr.io/anril32/karsajobs-ui:latest
-
+# Menentukan urutan pekerjaan
 workflows:
   karsajobs-ui-workflow:
     jobs:
