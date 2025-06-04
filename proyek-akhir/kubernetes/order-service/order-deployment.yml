@@ -1,0 +1,44 @@
+# versi API yang digunakan
+apiVersion: apps/v1
+# mengindikasikan resource yang digunakan
+kind: Deployment
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: order-service
+  labels:
+    app: e-commerce
+    tier: order-service
+# tempat kita menspesifikasikan resource
+spec:
+  # replica Pod berjumlah 1
+  replicas: 1
+  # menggunakan selector untuk mengidentifikasi Pod
+  selector:
+    matchLabels:
+      tier: order-service
+  # tempat kita menspesifikasikan resource pod yang akan digunakan
+  template:
+    # berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+    metadata:
+      labels:
+        app: e-commerce
+        tier: order-service
+    # tempat kita menspesifikasikan resource
+    spec:
+      # mendefinisikan spesifikasi container di dalam Pod
+      containers:
+        # nama container
+        - name: order-service
+          # image yang digunakan
+          image: ghcr.io/anril32/order-service:latest
+          # image hanya akan diunduh bila tidak tersedia secara lokal
+          imagePullPolicy: IfNotPresent
+          # mengekspos port
+          ports:
+            - containerPort: 3000
+          # environment variable yang akan digunakan
+          env:
+            - name: PORT
+              value: "3000"
+            - name: AMQP_URL
+              value: amqp://guest:guest@rabbitmq.rabbitmq.svc.cluster.local:5672

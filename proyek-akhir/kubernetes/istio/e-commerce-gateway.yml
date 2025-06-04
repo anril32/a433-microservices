@@ -1,0 +1,53 @@
+# versi API yang digunakan
+apiVersion: networking.istio.io/v1alpha3
+# mengindikasikan resource yang digunakan
+kind: Gateway
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: e-commerce-gateway
+# tempat kita menspesifikasikan resource
+spec:
+  # memilih pod dengan label tertentu (yang menjalankan istio ingress gateway)
+  selector:
+    # Label default Istio Ingress Gateway (biasanya ada di namespace istio-system)
+    istio: ingressgateway
+  # Konfigurasi server-server yang menangani lalu lintas masuk
+  servers:
+  - port:
+      # Port eksternal yang dibuka
+      number: 80
+      # Nama port
+      name: http
+      # Protokol yang digunakan
+      protocol: HTTP
+    # Menerima request dari semua host/domain
+    hosts:
+    - "*"
+---
+# versi API yang digunakan
+apiVersion: networking.istio.io/v1alpha3
+# Jenis resource VirtualService (mengatur routing lalu lintas ke service di mesh)
+kind: VirtualService
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: e-commerce
+# tempat kita menspesifikasikan resource
+spec:
+  # Menerima request dari semua host/domain
+  hosts:
+  - "*"
+  # Menghubungkan VirtualService ini dengan Gateway bernama e-commerce-gateway
+  gateways:
+  - e-commerce-gateway
+  # Memetakan path URL
+  http:
+  - match:
+    - uri:
+        exact: /order
+    route:
+    # nama Kubernetes Service untuk order service (service internal)
+    - destination:
+        host: order-service
+        # Port di service `order-service` yang akan diteruskan request-nya
+        port:
+          number: 3000

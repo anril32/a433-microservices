@@ -1,0 +1,20 @@
+# versi API yang digunakan
+apiVersion: v1
+# mengindikasikan resource yang digunakan
+kind: Service
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: order-service
+  labels:
+    app: e-commerce
+# tempat kita menspesifikasikan resource
+spec:
+  # memakai tipe NodePort
+  type: NodePort
+  # mengekspos port
+  ports:
+    - port: 3000
+      name: http
+  # menargetkan resource yang menggunakan service ini
+  selector:
+    tier: order-service

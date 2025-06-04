@@ -1,0 +1,23 @@
+# versi API yang digunakan
+apiVersion: v1
+# mengindikasikan resource yang digunakan
+kind: Service
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: rabbitmq
+  namespace: rabbitmq
+# tempat kita menspesifikasikan resource
+spec:
+  # menargetkan resource yang menggunakan service ini
+  selector:
+    app: rabbitmq
+  # mengekspos port
+  ports:
+    - name: amqp
+      port: 5672
+      targetPort: 5672
+    - name: management
+      port: 15672
+      targetPort: 15672
+  # Untuk akses via Minikube dari localhost
+  type: NodePort
