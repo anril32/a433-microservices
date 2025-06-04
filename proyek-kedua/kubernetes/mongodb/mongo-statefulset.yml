@@ -1,0 +1,73 @@
+# versi API yang digunakan
+apiVersion: apps/v1
+# mengindikasikan resource yang digunakan
+kind: StatefulSet
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+# tempat kita menspesifikasikan resource
+spec:
+  # menggunakan selector untuk mengidentifikasi Pod
+  selector:
+    matchLabels:
+      app: mongo
+      tier: data
+  # menentukan nama service yang akan digunakan untuk mengakses sebuah Service
+  serviceName: mongo
+  # replica Pod berjumlah 1
+  replicas: 1
+  # menentukan waktu minimum (dalam detik) yang harus berlalu sebelum sebuah Pod dianggap siap dan dapat dilayani setelah Pod tersebut dibuat
+  minReadySeconds: 10
+  # tempat kita menspesifikasikan resource pod yang akan digunakan
+  template:
+    # berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+    metadata:
+      labels:
+        app: mongo
+        tier: data
+    # tempat kita menspesifikasikan resource
+    spec:
+      terminationGracePeriodSeconds: 10
+      # mendefinisikan spesifikasi container di dalam Pod
+      containers:
+        # image yang digunakan
+        - image: mongo:latest
+          # nama container
+          name: mongo
+          # environment variable yang akan digunakan
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+          # mengekspos port
+          ports:
+            - containerPort: 27017
+              name: mongo
+          # memasangkan volume dengan nama volume diambil dari deklarasi volume dan letak volume yang akan dipasang
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+            - name: mongo-config
+              mountPath: /config
+            - name: mongo-secret
+              mountPath: /etc/mongo-credentials
+      # deklarasi volume dalam Pod
+      volumes:
+        # Mengambil volume dari mongo-pv-claim
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim
+        # Mengambil volume dari mongo.conf
+        - name: mongo-config
+          configMap:
+            name: mongo-config
+            items:
+              - key: mongo.conf
+                path: mongo.conf
+        # Mengambil volume dari mongo-secret
+        - name: mongo-secret
+          secret:
+            secretName: mongo-secret

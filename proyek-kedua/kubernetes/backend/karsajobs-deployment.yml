@@ -1,0 +1,58 @@
+# versi API yang digunakan
+apiVersion: apps/v1
+# mengindikasikan resource yang digunakan
+kind: Deployment
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: karsajobs
+  labels:
+    app: karsa-jobs
+    tier: backend
+# tempat kita menspesifikasikan resource
+spec:
+  # replica Pod berjumlah 1
+  replicas: 1
+  # menggunakan selector untuk mengidentifikasi Pod
+  selector:
+    matchLabels:
+      tier: backend
+  # tempat kita menspesifikasikan resource pod yang akan digunakan
+  template:
+    # berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+    metadata:
+      labels:
+        app: karsa-jobs
+        tier: backend
+    # tempat kita menspesifikasikan resource
+    spec:
+      # mendefinisikan spesifikasi container di dalam Pod
+      containers:
+        # nama container
+        - name: backend
+          # image yang digunakan
+          image: ghcr.io/anril32/karsajobs:latest
+          # image hanya akan diunduh bila tidak tersedia secara lokal
+          imagePullPolicy: IfNotPresent
+          # mengekspos port
+          ports:
+            - containerPort: 8080
+          # environment variable yang akan digunakan
+          env:
+            # APP_PORT dengan nilai “8080”
+            - name: APP_PORT
+              value: "8080"
+            - name: MONGO_HOST
+              # diambil dari MongoDB Service
+              value: mongo
+            - name: MONGO_USER
+              # diambil dari MongoDB Secret
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_USERNAME
+            - name: MONGO_PASS
+              # diambil dari MongoDB Secret
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_PASSWORD

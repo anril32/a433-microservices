@@ -1,0 +1,44 @@
+# versi API yang digunakan
+apiVersion: apps/v1
+# mengindikasikan resource yang digunakan
+kind: Deployment
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: karsajobs-ui
+  labels:
+    app: karsa-jobs
+    tier: frontend
+# tempat kita menspesifikasikan resource
+spec:
+  # replica Pod berjumlah 1
+  replicas: 1
+  # menggunakan selector untuk mengidentifikasi Pod
+  selector:
+    matchLabels:
+      tier: frontend
+  # tempat kita menspesifikasikan resource pod yang akan digunakan
+  template:
+    # berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+    metadata:
+      labels:
+        app: karsa-jobs
+        tier: frontend
+    # tempat kita menspesifikasikan resource
+    spec:
+      # mendefinisikan spesifikasi container di dalam Pod
+      containers:
+        # nama container
+        - name: frontend
+          # image yang digunakan
+          image: ghcr.io/anril32/karsajobs-ui:latest
+          # image hanya akan diunduh bila tidak tersedia secara lokal
+          imagePullPolicy: IfNotPresent
+          # mengekspos port
+          ports:
+            - containerPort: 8000
+          # environment variable yang akan digunakan
+          env:
+            # IP server backend yang akan digunakan
+            - name: VUE_APP_BACKEND
+              value: http://127.0.0.1:41169
+              # http://192.168.49.2:30027

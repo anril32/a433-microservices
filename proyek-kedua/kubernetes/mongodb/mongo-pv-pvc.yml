@@ -1,0 +1,46 @@
+# versi API yang digunakan
+apiVersion: v1
+# mengindikasikan resource yang digunakan
+kind: PersistentVolume
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: mongo-pv
+  # menentukan tipe volume-nya adalah local
+  labels:
+    type: local
+# tempat kita menspesifikasikan resource
+spec:
+  # nama Storage Class dengan manual
+  storageClassName: manual
+  # kapasitas penyimpanan
+  capacity:
+    storage: 5Gi
+  # access mode
+  accessModes:
+    # volume dapat dipasang sebagai read-write oleh satu node
+    - ReadWriteOnce
+  # Tempat menyimpan data
+  hostPath:
+    path: "/mnt/data/mongo"
+---
+# versi API yang digunakan
+apiVersion: v1
+# mengindikasikan resource yang digunakan
+kind: PersistentVolumeClaim
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: mongo-pv-claim
+  labels:
+    app: mongo
+# tempat kita menspesifikasikan resource
+spec:
+  # nama Storage Class dengan manual
+  storageClassName: manual
+  # access mode
+  accessModes:
+    # volume dapat dipasang sebagai read-write oleh satu node
+    - ReadWriteOnce
+  # permintaan penyimpanan
+  resources:
+    requests:
+      storage: 5Gi

@@ -1,0 +1,20 @@
+# versi API yang digunakan
+apiVersion: v1
+# mengindikasikan resource yang digunakan
+kind: Service
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+# tempat kita menspesifikasikan resource
+spec:
+  # mengekspos port
+  ports:
+    - port: 27017
+  # menargetkan resource yang menggunakan service ini
+  selector:
+    app: mongo
+    tier: data
+  # membuat Headless Service, takkan mengalokasikan IP address untuk Service yang dibuat
+  clusterIP: None

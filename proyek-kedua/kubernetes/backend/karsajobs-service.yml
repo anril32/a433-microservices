@@ -1,0 +1,20 @@
+# versi API yang digunakan
+apiVersion: v1
+# mengindikasikan resource yang digunakan
+kind: Service
+# berisi informasi yang relevan terkait resource dan membantu dalam pengidentifikasian
+metadata:
+  name: karsajobs
+  labels:
+    app: karsa-jobs
+# tempat kita menspesifikasikan resource
+spec:
+  # memakai tipe NodePort
+  type: NodePort
+  # mengekspos port dan nodePort
+  ports:
+    - port: 8080
+      nodePort: 30027
+  # menargetkan resource yang menggunakan service ini
+  selector:
+    tier: backend
